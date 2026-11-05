@@ -82,5 +82,8 @@ cleanup function), register it in `MODULES` in `js/app.js`, and place
 
 ## License
 
-- Code: GPL-3.0 (see `LICENSE`).
-- Course text and exercises: CC BY-SA 4.0 (see `LICENSE-CONTENT.md`).
+Copyright © 2026 Xin (Shane) Miao.
+
+- Software: MIT License (see `LICENSE`).
+- Course text, figures and exercises: Creative Commons Attribution 4.0
+  International, CC BY 4.0 (see `LICENSE-CONTENT.md` and `LICENSES/CC-BY-4.0.txt`).
