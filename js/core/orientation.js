@@ -62,10 +62,11 @@ const Rz = k => [[Math.cos(k), -Math.sin(k), 0], [Math.sin(k), Math.cos(k), 0], 
 const mul = (A, B) => A.map(r => [0, 1, 2].map(j => r[0] * B[0][j] + r[1] * B[1][j] + r[2] * B[2][j]));
 
 // Rotation matrix from camera to ground axes, in the angle convention of the
-// course data files: R = Rz(kappa) * Ry(-phi) * Rx(omega).
-// (Verified against the .ABS files of the sample data, see tests/.)
+// course data files: R = Rz(kappa) * Rx(omega) * Ry(-phi).
+// (Determined from the .ABS files of the sample data: with this order a
+// resection reproduces their kappa to 0.0001 deg, see tests/.)
 export function rotationMatrix(omega, phi, kappa) {
-  return mul(mul(Rz(kappa), Ry(-phi)), Rx(omega));
+  return mul(mul(Rz(kappa), Rx(omega)), Ry(-phi));
 }
 
 // Collinearity: ground point -> image coordinates in mm.

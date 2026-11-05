@@ -1,0 +1,36 @@
+<article>
+<p class="eyebrow">Lab L1 · Single model</p>
+<h1>A single stereo model</h1>
+<p class="lede">Orient photos 157 and 158 yourself, then look at the model in three dimensions and measure heights on it. This lab uses everything from Chapters 2 to 5.</p>
+
+<div class="prose">
+<h2>Before you start</h2>
+<p>The interior orientations of both photos are taken as done (Chapter 2), so every click is converted straight into image millimetres. Twelve control points have surveyed ground coordinates. Each photo shows nine of them, and six appear in both. For each one, a small image chip shows what the point looks like on the ground: a road crossing, a corner of a field, the end of a wall. Identifying control points reliably is a skill in itself, and the chip is your field sketch.</p>
+
+<h2>Part A: measure and resect</h2>
+<ol>
+  <li>Click a point in the table. Both photos jump to its neighbourhood. Compare with the chip, zoom in, and click the exact spot in each photo where it appears.</li>
+  <li>After four points in a photo, the software resects it (Chapter 4). Cyan circles then show where your current solution expects the other control points. If a circle sits far from the feature, check that point.</li>
+  <li>Measure all control points visible in each photo. Aim for σ₀ below about one and a half pixels (130 µm); the reference measurements reach 67 and 94 µm.</li>
+  <li>Compare your camera positions with the reference solution. A few decimetres is very good; several metres means at least one point is misidentified.</li>
+</ol>
+<p>If you only want to try the stereo part, <em>Fill in reference measurements</em> loads a complete set.</p>
+</div>
+
+<div class="demo" data-demo="modelLab"></div>
+
+<div class="prose">
+<h2>Part B: seeing and measuring in stereo</h2>
+<p>As soon as both photos are oriented, the stereo view uses your orientations; until then it uses the reference ones. With red-cyan glasses (red over the left eye) the terrain appears in depth. Without glasses, use <em>Flicker</em>: ground that is not at the height of the mark jumps back and forth, and it stands still where the mark touches it.</p>
+<ol>
+  <li>Pick a control point from the list and set the floating mark's height until the mark sits on the ground. Read off your height and compare it with the surveyed Z.</li>
+  <li>Press <em>Snap to surface</em>. The software tries many heights and picks the one where the two photos look most alike around the mark (normalised cross-correlation). How close is it to your own setting, and to the control point?</li>
+  <li>Move to a house roof, then to the street beside it. Measure both and work out the height of the building.</li>
+  <li>Record ten points across the model and compare each with the reference terrain model. Where are the differences largest, and why?</li>
+</ol>
+
+<div class="note task"><b>Report.</b> Hand in: your resection results for both photos (σ₀, camera positions and their distance from the reference), a table of your stereo measurements at the six common control points with their differences from the surveyed heights, and two or three sentences comparing those differences with the expected height precision from Chapter 5.</div>
+
+<div class="note"><b>No glasses?</b> Anaglyph glasses cost very little and are worth having for this course. Flicker mode and side-by-side mode (for free viewing, as with a pocket stereoscope) work without them.</div>
+</div>
+</article>

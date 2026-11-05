@@ -1,0 +1,32 @@
+<article>
+<p class="eyebrow">Chapter 4 · Concepts</p>
+<h1>Space resection</h1>
+<p class="lede">Where was the camera, and which way was it pointing? If a photograph shows a few points whose ground coordinates are known, the photograph itself answers the question.</p>
+
+<div class="prose">
+<h2>Turning the collinearity equations around</h2>
+<p>In Chapter 3 the exterior orientation was given, and the collinearity equations predicted where each ground point appears in the photo. Space resection runs the same equations the other way. The ground coordinates (X, Y, Z) of some <em>control points</em> are known from a survey, their image coordinates (x, y) are measured in the photo, and the six unknowns are the exterior orientation: X₀, Y₀, Z₀, ω, φ, κ.</p>
+<p>Each control point gives two equations, one for x and one for y. Three well-spread points give six equations for six unknowns, the bare minimum. Every point beyond that adds redundancy, which both improves the result and shows how good it is.</p>
+
+<h2>Why it takes several rounds</h2>
+<p>The collinearity equations are not linear in the unknowns: the angles sit inside sines and cosines, and the position appears in a fraction. The standard approach is to start from approximate values, replace the equations by their tangent (a linear approximation) at those values, solve the linear problem by least squares for small corrections, and repeat. This is the <em>Gauss-Newton</em> method. From a reasonable start it converges in a handful of iterations.</p>
+<p>Approximate values are rarely a problem for vertical aerial photos. The camera looked roughly straight down, so ω and φ start at zero. Fitting a flat 2D similarity transformation between the image and the ground coordinates of the control points gives a first position, the photo's rotation κ, and the scale. The scale times the focal length gives the flying height.</p>
+</div>
+
+<div class="demo" data-demo="resection3d"></div>
+
+<div class="prose">
+<div class="note task"><b>Try it.</b> (1) Press <em>Next iteration</em> a few times and watch the residuals shrink. How many iterations are needed from the automatic start? (2) Move the start position 1500 m away and turn κ by 45°. Does it still converge, and in how many steps? (3) Switch control points off until only three remain. The residuals become zero. Why is that not good news? (4) Keep three points that lie almost on one line. What happens?</div>
+
+<h2>Reading the result</h2>
+<p>With nine control points, photo 157 has 18 observations for 6 unknowns, a redundancy of 12. The standard deviation of unit weight σ₀ comes out at about 0.07 mm in the photo, a little under one pixel of the scan, which is typical for well-identified natural control points. The computed camera lies within a centimetre of the reference solution delivered with the data.</p>
+<dl class="terms">
+  <dt>Residuals</dt><dd>Measured minus computed image coordinates. A single large one usually points to a mis-identified control point or a typing error in its coordinates.</dd>
+  <dt>σ₀</dt><dd>The overall measuring precision implied by the residuals. Compare it with the pixel size.</dd>
+  <dt>Geometry</dt><dd>Control points should surround the area of interest. Points bunched in one corner make the angles and the height poorly determined, even when σ₀ looks good.</dd>
+</dl>
+
+<h2>Where resection is used</h2>
+<p>Resection orients a single photo whenever enough control is visible in it. It is also the first step in many workflows that later add more photos, and the idea behind it, linearising and iterating, carries straight over to relative orientation and bundle adjustment.</p>
+</div>
+</article>

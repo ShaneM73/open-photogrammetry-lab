@@ -1,0 +1,32 @@
+<article>
+<p class="eyebrow">Chapter 5 · Concepts</p>
+<h1>The stereo model</h1>
+<p class="lede">Two oriented photos of the same ground form a stereo model: every point seen in both can be located in three dimensions by intersecting its two rays. The model can be built in two steps, first between the photos and then onto the ground.</p>
+
+<div class="prose">
+<h2>Space intersection</h2>
+<p>If both exterior orientations are known, a point measured in the left and in the right photo defines two rays. Where they meet is the point's position on the ground. With perfect measurements the rays meet exactly; in practice they pass close to each other, and the best estimate is the point that fits both rays by least squares.</p>
+<p>The height is the sensitive part. Moving a point up or down shifts its two images in opposite directions along the base, and the difference between them, the <em>x-parallax</em>, is what carries the height. A small error in the parallax becomes a height error of roughly</p>
+<div class="eq"><math display="block"><msub><mi>σ</mi><mi>Z</mi></msub><mo>≈</mo><msub><mi>m</mi><mi>b</mi></msub><mo>·</mo><mfrac><mi>H</mi><mi>B</mi></mfrac><mo>·</mo><msub><mi>σ</mi><msub><mi>p</mi><mi>x</mi></msub></msub></math></div>
+<p>For the sample pair, with an image scale of about 1 : 12 900 and B/H ≈ 0.5, an error of 0.1 mm in the parallax moves a height by about 2.6 m. This is why the base-to-height ratio matters so much when a flight is planned.</p>
+
+<h2>Step 1: relative orientation</h2>
+<p>Suppose nothing is known about the ground. The two photos can still be put back into the position they had to each other at the moment of exposure. Hold the left camera fixed and move the right one until every pair of corresponding rays intersects. Once that is true for enough points, it is true everywhere, and the intersections form a three-dimensional model of the terrain at an unknown scale, position and rotation.</p>
+<p>The condition is called <em>coplanarity</em>: the base between the two projection centres and the two rays of a point must lie in one plane. If they do not, the rays miss each other, and the miss shows in the photos as a <em>y-parallax</em>, an offset across the base direction. Relative orientation removes y-parallax.</p>
+<p>Of the right camera's six parameters, the base component b<sub>x</sub> only scales the model and can be fixed at any value. The remaining five, b<sub>y</sub>, b<sub>z</sub>, ω, φ and κ, are the unknowns, so at least five points measured in both photos are needed. In practice six or more are used, spread over the overlap: two near each principal point and two at each side, the arrangement known as the <em>Gruber points</em>.</p>
+</div>
+
+<div class="demo" data-demo="stereomodel3d"></div>
+
+<div class="prose">
+<div class="note task"><b>Try it.</b> (1) In step 1, set all sliders to zero. Are the rays intersecting? The photos were taken from a moving aircraft that was never perfectly steady. (2) Move one slider at a time and watch which points get y-parallax. Which parameter affects the points near the edges most? (3) Press <em>Solve</em>. Where does it end, and how large is the remaining y-parallax compared with the 85 µm pixel size?</div>
+
+<h2>Step 2: absolute orientation</h2>
+<p>The finished model has the right shape but an arbitrary scale, position and rotation. Absolute orientation fixes those with a three-dimensional similarity transformation: one scale factor, three rotations and three shifts, seven parameters in all.</p>
+<div class="eq"><math display="block"><mi mathvariant="bold">X</mi><mo>=</mo><mi>s</mi><mspace width="0.2em"/><mi mathvariant="bold">R</mi><mspace width="0.2em"/><mi mathvariant="bold">x</mi><mo>+</mo><mi mathvariant="bold">T</mi></math></div>
+<p>Each control point known in both the model and on the ground gives three equations, so two full control points plus one height would be enough. Three or more full points are the usual minimum, and more points spread around the model's corners give a check. The residuals at the control points then show how well the model fits the survey.</p>
+<p>Relative plus absolute orientation leads to the same kind of result as resecting both photos separately. With the six common points of the sample pair, the projection centres it gives lie about 5 m from the reference orientations of Chapter 3, which were computed from nine points per photo. That difference is consistent with the measuring precision. Doing it in two steps has practical advantages: relative orientation needs no control at all, so problems in the photos and problems in the control show up separately.</p>
+
+<div class="note task"><b>Questions.</b> (1) The scale factor is about 13. What does that tell you about the model's units? (2) Which control point has the largest residual after absolute orientation? Find it in the lab in L1 and check how clearly it can be identified in the photos. (3) Why must the control points for absolute orientation not all lie on one straight line?</div>
+</div>
+</article>

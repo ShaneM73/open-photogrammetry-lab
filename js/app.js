@@ -9,11 +9,11 @@ export const CHAPTERS = [
     { id: 'central-projection', n: '1', title: 'How a photograph measures' },
     { id: 'interior-orientation', n: '2', title: 'Interior orientation' },
     { id: 'flight-3d', n: '3', title: 'The test flight in 3D' },
-    { id: 'relative-orientation', n: '4', title: 'Relative orientation', soon: true },
-    { id: 'absolute-orientation', n: '5', title: 'Absolute orientation', soon: true },
+    { id: 'space-resection', n: '4', title: 'Space resection' },
+    { id: 'stereo-model', n: '5', title: 'The stereo model' },
   ] },
   { part: 'II · Labs', items: [
-    { id: 'lab-single-model', n: 'L1', title: 'A single stereo model', soon: true },
+    { id: 'lab-single-model', n: 'L1', title: 'A single stereo model' },
     { id: 'lab-triangulation', n: 'L2', title: 'Aerial triangulation', soon: true },
     { id: 'lab-special', n: 'L3', title: 'Special cases', soon: true },
   ] },
@@ -27,7 +27,10 @@ const MODULES = {
   projection3d: () => import('./demos/projection3d.js'),
   affine2d: () => import('./demos/affine2d.js'),
   flight3d: () => import('./demos/flight3d.js'),
+  resection3d: () => import('./demos/resection3d.js'),
+  stereomodel3d: () => import('./demos/stereomodel3d.js'),
   ioLab: () => import('./lab/io-lab.js'),
+  modelLab: () => import('./lab/model-lab.js'),
 };
 
 const toc = document.getElementById('toc');
