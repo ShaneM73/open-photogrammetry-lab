@@ -14,7 +14,7 @@ export const CHAPTERS = [
   ] },
   { part: 'II · Labs', items: [
     { id: 'lab-single-model', n: 'L1', title: 'A single stereo model' },
-    { id: 'lab-triangulation', n: 'L2', title: 'Aerial triangulation', soon: true },
+    { id: 'lab-triangulation', n: 'L2', title: 'Aerial triangulation' },
     { id: 'lab-special', n: 'L3', title: 'Special cases', soon: true },
   ] },
   { part: 'III · Products', items: [
@@ -35,6 +35,7 @@ const MODULES = {
   dtmLab: () => import('./lab/dtm-lab.js'),
   resampling: () => import('./demos/resampling.js'),
   orthoLab: () => import('./lab/ortho-lab.js'),
+  blockLab: () => import('./lab/block-lab.js'),
 };
 
 const toc = document.getElementById('toc');

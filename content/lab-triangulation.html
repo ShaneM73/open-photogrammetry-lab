@@ -1,0 +1,44 @@
+<article>
+<p class="eyebrow">Lab L2 · Aerial triangulation</p>
+<h1>Aerial triangulation of a block</h1>
+<p class="lede">Twenty-one photos in three strips, but only eleven control points. Aerial triangulation glues all photos together with tie points and orients the whole block at once, so that every photo gets an accurate orientation even where no control is visible.</p>
+
+<div class="prose">
+<h2>Why a block?</h2>
+<p>In Lab L1 each photo was oriented by its own control points: at least three per photo, in practice more. For a block of hundreds of photos that would mean surveying thousands of points on the ground. Aerial triangulation needs far fewer. Points that can be identified in several neighbouring photos, <em>tie points</em>, connect the photos to each other; their ground coordinates need not be known. A small number of well-placed control points, mainly around the edge of the block, then fixes the block's position, scale and rotation.</p>
+<p>The standard method is the <em>bundle block adjustment</em>. Each photo is a bundle of rays. The adjustment shifts and rotates all bundles at once until corresponding rays meet as well as possible and the control rays hit their surveyed points. Every image measurement is one observation; the unknowns are six orientation parameters per photo and three coordinates per tie point.</p>
+
+<h2>The block</h2>
+<p>The photos come from three parallel strips over the area you already know from Lab L1: photos 134–140, 155–161 and 164–170. Neighbouring photos in a strip overlap by about 60 percent, neighbouring strips by about 25 percent. Photos 157 and 158 are the pair from Lab L1.</p>
+<p>To keep the download small, the photos here have half the scan resolution (about 170 µm pixels). The interior orientations are taken as done, using the reference results.</p>
+
+<h2>The steps</h2>
+<dl class="terms">
+  <dt>1 · Control</dt><dd>Find each control point in every photo that shows it. An image chip guides the search; you check the doubtful cases.</dd>
+  <dt>2 · Strip connections</dt><dd>Points in the side overlap, which tie one strip to the next.</dd>
+  <dt>3 · Approximations</dt><dd>A 2D block adjustment, then a first bundle adjustment, give every photo a starting orientation.</dd>
+  <dt>4 · Tie points</dt><dd>Automatic measurement of hundreds of points by image matching.</dd>
+  <dt>5 · Bundle adjustment</dt><dd>The full adjustment, with removal of blunders.</dd>
+  <dt>6 · Checks</dt><dd>Accuracy at points not used in the adjustment, and a 3D view of the result.</dd>
+</dl>
+<p>Work through the steps one by one, or use <em>Run all steps</em> and then go back to look at each result.</p>
+</div>
+
+<div class="demo" data-demo="blockLab"></div>
+
+<div class="prose">
+<div class="note task"><b>Tasks.</b>
+<ol>
+  <li>In step 1, look at the rejected measurements. Point 80004 fails in photos 157 to 159. Open them, compare with the chip, and decide: measure by hand, or reject. Justify your choice.</li>
+  <li>After the full run, note σ₀, the number of observations and the redundancy. Convert σ₀ into scan pixels. Is the result good?</li>
+  <li>How many blunders did the adjustment remove, and how many rounds did it take?</li>
+  <li>Make 80002, 80004 and 80011 check points and run the steps again. Compare their errors with the independent check from Lab L1's surveyed points. Which result do you trust more, and why?</li>
+  <li>Compare the standard deviations of the photo positions at the edge of the block with those in the middle. Where would you add control points?</li>
+  <li>Repeat step 4 with a 300 m and a 150 m grid. How do σ₀ and the check point errors change?</li>
+</ol></div>
+
+<h2>Reading the result</h2>
+<p>σ₀ estimates the precision of a single image measurement. A value around one scan pixel is good for natural points measured by matching. The check points show the accuracy of the final ground coordinates. With an image scale of 1 : 12 900 and a pixel of 85 µm, one pixel corresponds to about 1.1 m on the ground; check point errors of one to three pixels in plan and somewhat more in height are typical for a block with this little control.</p>
+<p>The standard deviations of the photo orientations come from the inverse of the normal equations. They grow towards the corners of the block, where fewer photos and control points hold each photo in place. This is why control is planned around the edge of a block first.</p>
+</div>
+</article>
