@@ -18,8 +18,8 @@ export const CHAPTERS = [
     { id: 'lab-special', n: 'L3', title: 'Special cases', soon: true },
   ] },
   { part: 'III · Products', items: [
-    { id: 'dem', n: '6', title: 'Terrain models by image matching', soon: true },
-    { id: 'orthophoto', n: '7', title: 'Orthophotos', soon: true },
+    { id: 'dem', n: '6', title: 'Terrain models by image matching' },
+    { id: 'orthophoto', n: '7', title: 'Orthophotos' },
   ] },
 ];
 
@@ -31,6 +31,10 @@ const MODULES = {
   stereomodel3d: () => import('./demos/stereomodel3d.js'),
   ioLab: () => import('./lab/io-lab.js'),
   modelLab: () => import('./lab/model-lab.js'),
+  matchdemo: () => import('./demos/matchdemo.js'),
+  dtmLab: () => import('./lab/dtm-lab.js'),
+  resampling: () => import('./demos/resampling.js'),
+  orthoLab: () => import('./lab/ortho-lab.js'),
 };
 
 const toc = document.getElementById('toc');

@@ -1,0 +1,43 @@
+<article>
+<p class="eyebrow">Chapter 6 · Products</p>
+<h1>Terrain models by image matching</h1>
+<p class="lede">Measuring heights one point at a time with a floating mark is accurate but slow. Image matching lets the computer do the same thing at thousands of points by comparing small patches of the two photos.</p>
+
+<div class="prose">
+<h2>The idea</h2>
+<p>In the stereo lab you moved the floating mark up and down until the two images agreed at the mark. Image matching automates exactly this. For a position on the ground (X, Y), the computer tries a series of heights. For each trial height it uses the collinearity equations to cut a small patch out of each photo around the point (X, Y, Z). If Z is the true height, both patches show the same piece of ground and look alike. If not, they show neighbouring pieces and look different.</p>
+<p>Searching up and down a vertical line through the ground point gives the method its name: the <em>vertical line locus</em>. Because the search runs in object space, it works the same way for vertical, tilted and even oblique photos.</p>
+
+<h2>Measuring similarity</h2>
+<p>The standard measure is the <em>normalised cross-correlation coefficient</em>. For two patches with grey values a<sub>i</sub> and b<sub>i</sub>:</p>
+<div class="eq"><math display="block"><mi>r</mi><mo>=</mo><mfrac><mrow><munder><mo>∑</mo><mi>i</mi></munder><mo>(</mo><msub><mi>a</mi><mi>i</mi></msub><mo>−</mo><mover><mi>a</mi><mo>¯</mo></mover><mo>)</mo><mo>(</mo><msub><mi>b</mi><mi>i</mi></msub><mo>−</mo><mover><mi>b</mi><mo>¯</mo></mover><mo>)</mo></mrow><msqrt><mrow><munder><mo>∑</mo><mi>i</mi></munder><msup><mrow><mo>(</mo><msub><mi>a</mi><mi>i</mi></msub><mo>−</mo><mover><mi>a</mi><mo>¯</mo></mover><mo>)</mo></mrow><mn>2</mn></msup><munder><mo>∑</mo><mi>i</mi></munder><msup><mrow><mo>(</mo><msub><mi>b</mi><mi>i</mi></msub><mo>−</mo><mover><mi>b</mi><mo>¯</mo></mover><mo>)</mo></mrow><mn>2</mn></msup></mrow></msqrt></mfrac></math></div>
+<p>It ranges from −1 to +1 and does not change if one photo is brighter or has more contrast than the other, which is common between two exposures. Values above about 0.7 usually indicate a reliable match.</p>
+</div>
+
+<div class="demo" data-demo="matchdemo"></div>
+
+<div class="prose">
+<div class="note task"><b>Try it.</b> (1) Click a street crossing in the town. How sharp is the correlation peak? (2) Click a uniform field or a dark forest. What does the curve look like now, and why? (3) Switch to the 7 × 7 patch on a textured spot, then to 25 × 25. Which gives a clearer peak, and which would follow small terrain details better? (4) Find a spot where the best height differs clearly from the reference terrain model. Is the matching wrong, or is it measuring something the terrain model leaves out, such as trees or roofs?</div>
+
+<h2>What makes matching hard</h2>
+<dl class="terms">
+  <dt>Little texture</dt><dd>Water, fresh snow, uniform fields or deep shadow give flat patches; r is undefined or meaningless.</dd>
+  <dt>Repetitive patterns</dt><dd>Rows of trees or a regular street grid produce several peaks, and the highest may be the wrong one.</dd>
+  <dt>Occlusions</dt><dd>Steep slopes, walls and tree crowns hide ground that one photo sees and the other does not.</dd>
+  <dt>Surface, not terrain</dt><dd>Matching measures whatever is visible: roofs and treetops. A terrain model of the bare ground needs these filtered out afterwards.</dd>
+</dl>
+
+<h2>From points to a terrain model</h2>
+<p>A practical matcher works on a regular grid and from coarse to fine. A first pass on a coarse grid searches the full height range. Each later pass halves the grid spacing and searches only a narrow band around the heights found before, which is faster and avoids most false peaks. Cells without a reliable match are filled by interpolation from their neighbours, and a median filter removes isolated spikes.</p>
+<p>The patch size is a trade-off. Large windows give stable matches in weak texture but smooth away small forms; small windows follow detail but fail more often. A useful rule: the steeper and more varied the terrain, the smaller the window can be.</p>
+</div>
+
+<div class="demo" data-demo="dtmLab"></div>
+
+<div class="prose">
+<div class="note task"><b>Lab questions.</b> (1) Run with the default settings. What share of cells matched directly, and how large is the standard deviation against the reference model? (2) Switch to <em>Correlation</em>. Where are the weak areas, and what is on the ground there? (3) Switch to <em>vs reference</em>. Is the mean difference positive or negative over the town and over the forest, and why? (4) Repeat with a 7 × 7 window and with r ≥ 0.9. Which setting gives the better model here? (5) Save your best model for Chapter 7.</div>
+
+<h2>Quality control</h2>
+<p>A matched terrain model should always be checked: against control points, against heights measured stereoscopically, and visually as shaded relief, where blunders show up as pits and spikes. Contour lines are a sensitive test as well, because errors make them cross, loop or form tight circles.</p>
+</div>
+</article>

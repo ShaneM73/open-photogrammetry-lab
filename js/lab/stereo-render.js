@@ -4,38 +4,13 @@
 // in both images; higher ground is shifted apart along x, which is exactly
 // the horizontal parallax the eyes need to see depth.
 
-// Grey values of an image (HTMLImageElement or canvas) as a Uint8Array.
-export function greyData(img) {
-  const c = document.createElement('canvas');
-  c.width = img.width; c.height = img.height;
-  const ctx = c.getContext('2d', { willReadFrequently: true });
-  ctx.drawImage(img, 0, 0);
-  const rgba = ctx.getImageData(0, 0, img.width, img.height).data;
-  const g = new Uint8Array(img.width * img.height);
-  for (let i = 0; i < g.length; i++) g[i] = rgba[4 * i];
-  return { w: img.width, h: img.height, g };
-}
+import { makePhoto, greyData } from '../core/camera.js';
+export { greyData };
 
-// A camera ready for fast projection: exterior orientation + interior orientation + pixels.
-export function makeProjector(eo, inn, img) {
-  const R = eo.R, f = eo.focal, c = inn.coef;
-  return (X, Y, Z) => {
-    const dx = X - eo.X0, dy = Y - eo.Y0, dz = Z - eo.Z0;
-    const u0 = R[0][0] * dx + R[1][0] * dy + R[2][0] * dz;
-    const u1 = R[0][1] * dx + R[1][1] * dy + R[2][1] * dz;
-    const u2 = R[0][2] * dx + R[1][2] * dy + R[2][2] * dz;
-    const x = -f * u0 / u2, y = -f * u1 / u2;
-    const col = c.a0 + c.a1 * x + c.a2 * y, row = c.b0 + c.b1 * x + c.b2 * y;
-    // raster position (origin top-left, pixel centres at i + 0.5)
-    return sample(img, col - 0.5, img.h - row - 0.5);
-  };
-}
-
-function sample(img, u, v) {
-  const u0 = Math.floor(u), v0 = Math.floor(v);
-  if (u0 < 0 || v0 < 0 || u0 >= img.w - 1 || v0 >= img.h - 1) return -1;
-  const fu = u - u0, fv = v - v0, i = v0 * img.w + u0, g = img.g;
-  return (g[i] * (1 - fu) + g[i + 1] * fu) * (1 - fv) + (g[i + img.w] * (1 - fu) + g[i + img.w + 1] * fu) * fv;
+// A ground -> grey value function for one photo (exterior + interior orientation + pixels).
+export function makeProjector(eo, inn, img, scale = 1) {
+  const p = makePhoto({ inn, eo, fullRows: img.h * scale, scale, grey: img });
+  return (X, Y, Z) => p.sampleGround(X, Y, Z);
 }
 
 // view: { X, Y (centre), gsd (m per screen pixel), ex: [east, north] unit base direction }

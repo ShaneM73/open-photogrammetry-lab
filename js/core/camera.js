@@ -6,11 +6,13 @@
 import { cameraToPixel, pixelToCamera, rotationMatrix } from './orientation.js';
 
 // inn: parsed .INN/.IDC; fullRows: rows of the original image (for the
-// bottom-left pixel convention); scale: original pixels per loaded pixel.
-export function makePhoto({ id, inn, eo = null, fullRows, scale = 1, grey = null }) {
+// bottom-left pixel convention); scale: original pixels per loaded pixel;
+// format: { hx, hy } half-size in mm of the usable image area (inside the
+// film frame and fiducial marks); points outside it count as not seen.
+export function makePhoto({ id, inn, eo = null, fullRows, scale = 1, grey = null, format = null }) {
   const c = inn.coef;
   const photo = {
-    id, inn, eo, scale, grey, fullRows,
+    id, inn, eo, scale, grey, fullRows, format,
     focal: inn.focal || eo?.focal,
     // camera mm -> raster position in the loaded image (origin top-left, pixel i covers i..i+1)
     toRaster(x, y) {
@@ -24,15 +26,21 @@ export function makePhoto({ id, inn, eo = null, fullRows, scale = 1, grey = null
       photo.eo = { ...e, R: e.R || rotationMatrix(e.omega, e.phi, e.kappa) };
       return photo;
     },
-    // ground -> raster position (null if behind the camera)
-    project(X, Y, Z) {
+    // ground -> image coordinates in mm (null if behind the camera or outside the format)
+    projectMM(X, Y, Z) {
       const e = photo.eo, R = e.R;
       const dx = X - e.X0, dy = Y - e.Y0, dz = Z - e.Z0;
       const u2 = R[0][2] * dx + R[1][2] * dy + R[2][2] * dz;
       if (u2 >= 0) return null;
       const x = -e.focal * (R[0][0] * dx + R[1][0] * dy + R[2][0] * dz) / u2;
       const y = -e.focal * (R[0][1] * dx + R[1][1] * dy + R[2][1] * dz) / u2;
-      return photo.toRaster(x, y);
+      if (photo.format && (Math.abs(x) > photo.format.hx || Math.abs(y) > photo.format.hy)) return null;
+      return [x, y];
+    },
+    // ground -> raster position in the loaded image
+    project(X, Y, Z) {
+      const m = photo.projectMM(X, Y, Z);
+      return m ? photo.toRaster(m[0], m[1]) : null;
     },
     // grey value at a ground point (bilinear), or -1 outside the photo
     sampleGround(X, Y, Z) {

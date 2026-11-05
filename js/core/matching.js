@@ -6,6 +6,24 @@
 // up to brightness and contrast). This works for vertical and oblique
 // photos alike, because the search runs along the vertical in object space.
 import { makeGrid, cellX, cellY, heightAt, fillGaps } from './raster.js';
+import { sampleBilinear } from './camera.js';
+
+// Fill `out` with a patch of (2 half + 1)^2 grey values around ground point
+// (X, Y, Z). Over a small patch the projection is practically affine, so only
+// three points are projected exactly and the rest is interpolated.
+function patch(photo, X, Y, Z, half, spacing, out) {
+  const c = photo.project(X, Y, Z), ex = photo.project(X + spacing, Y, Z), ey = photo.project(X, Y + spacing, Z);
+  if (!c || !ex || !ey) return false;
+  const du = [ex[0] - c[0], ex[1] - c[1]], dv = [ey[0] - c[0], ey[1] - c[1]];
+  let k = 0;
+  for (let j = -half; j <= half; j++) for (let i = -half; i <= half; i++) {
+    const u = c[0] + i * du[0] + j * dv[0] - 0.5, v = c[1] + i * du[1] + j * dv[1] - 0.5;
+    const g = sampleBilinear(photo.grey, u, v);
+    if (g < 0) return false;
+    out[k++] = g;
+  }
+  return true;
+}
 
 export function ncc(a, b, n) {
   let ma = 0, mb = 0;
@@ -17,7 +35,7 @@ export function ncc(a, b, n) {
   return sab / Math.sqrt(saa * sbb);
 }
 
-// Search heights zFrom..zTo at (X, Y). sample: (photoIndex, X, Y, Z) -> grey or -1.
+// Search heights zFrom..zTo at (X, Y) between two photos (see camera.js makePhoto).
 // half: patch half-size in samples, spacing: ground distance between samples.
 export function matchHeightAt(left, right, X, Y, zFrom, zTo, step, half, spacing) {
   const n = (2 * half + 1) ** 2;
@@ -25,13 +43,7 @@ export function matchHeightAt(left, right, X, Y, zFrom, zTo, step, half, spacing
   const scores = [];
   let best = { z: NaN, r: -2, idx: -1 };
   for (let Z = zFrom, idx = 0; Z <= zTo + 1e-9; Z += step, idx++) {
-    let k = 0, ok = true;
-    for (let j = -half; j <= half && ok; j++) for (let i = -half; i <= half; i++) {
-      const Xg = X + i * spacing, Yg = Y + j * spacing;
-      const l = left.sampleGround(Xg, Yg, Z), r = right.sampleGround(Xg, Yg, Z);
-      if (l < 0 || r < 0) { ok = false; break; }
-      a[k] = l; b[k] = r; k++;
-    }
+    const ok = patch(left, X, Y, Z, half, spacing, a) && patch(right, X, Y, Z, half, spacing, b);
     const r = ok ? ncc(a, b, n) : NaN;
     scores.push(r);
     if (r > best.r) best = { z: Z, r, idx };

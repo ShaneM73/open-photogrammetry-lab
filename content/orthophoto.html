@@ -1,0 +1,41 @@
+<article>
+<p class="eyebrow">Chapter 7 · Products</p>
+<h1>Orthophotos</h1>
+<p class="lede">An aerial photo is not a map: its scale changes with the terrain, and everything that rises above the ground leans outward. An orthophoto removes these effects, so the image can be measured like a map while still showing every detail of the photo.</p>
+
+<div class="prose">
+<h2>From central projection to orthogonal projection</h2>
+<p>Chapter 1 showed why a photo is not a map: a central projection puts higher points further from the centre, and its scale varies with the flying height above each spot. A map is an <em>orthogonal</em> projection: every point is dropped vertically onto the reference surface. To turn one into the other we need to know, for each point on the ground, where it appears in the photo. The collinearity equations answer that, as soon as we know three things: the photo's interior and exterior orientation, and the terrain height at the point.</p>
+
+<h2>Indirect rectification</h2>
+<p>The orthophoto is built backwards, from the output to the input:</p>
+<ol>
+  <li>Lay a grid of output pixels over the ground, for example every 2 m.</li>
+  <li>For each pixel centre (X, Y), read the height Z from the terrain model.</li>
+  <li>Project (X, Y, Z) into the photo with the collinearity equations and the interior orientation; the result is a position between scan pixels.</li>
+  <li>Take the grey value at that position by <em>resampling</em>, and write it to the output pixel.</li>
+</ol>
+<p>Working backwards guarantees that every output pixel gets exactly one value, with no gaps and no overlaps.</p>
+
+<h2>Resampling</h2>
+<p>The projected position rarely falls on a pixel centre, so the grey value has to be interpolated from the neighbours.</p>
+</div>
+
+<div class="demo" data-demo="resampling"></div>
+
+<div class="prose">
+<h2>Mosaics and seamlines</h2>
+<p>An orthophoto of a larger area is assembled from several photos. Where photos overlap, each output pixel can take its value from any of them. A simple and good rule is to use the photo whose nadir is nearest, because relief displacement and occlusion are smallest near the nadir. The borders between the parts, the <em>seamlines</em>, then run midway between neighbouring exposure stations. Production systems move seamlines along roads or field edges, and adjust brightness so the joins disappear.</p>
+
+<h2>How good is an orthophoto?</h2>
+<p>The orthophoto is only as accurate as the terrain model under it. A height error Δh at a point that lies a distance R from the nadir on the ground shifts it horizontally by about</p>
+<div class="eq"><math display="block"><mi>Δ</mi><mi>s</mi><mo>≈</mo><mfrac><mi>R</mi><mi>H</mi></mfrac><mo>·</mo><mi>Δ</mi><mi>h</mi></math></div>
+<p>At the edge of the sample photos, R/H is about 0.7, so a 10 m height error moves a point by 7 m. Buildings and trees are usually not in the terrain model at all, so their roofs and crowns still lean outward in an ordinary orthophoto. A <em>true orthophoto</em>, which also corrects those, needs a surface model that includes the objects and a way to fill the areas they hide.</p>
+</div>
+
+<div class="demo" data-demo="orthoLab"></div>
+
+<div class="prose">
+<div class="note task"><b>Lab questions.</b> (1) Compute the mosaic with the reference terrain model and look at the position errors. Then use the level plane at 1180 m. Which control points move most, and in which direction? Check your answer with the formula above. (2) Show <em>Source photo</em>. Where does the seamline run, and why there? (3) Compute with nearest neighbour and with bicubic resampling at 1 m and compare a street crossing up close. (4) If you saved a terrain model in Chapter 6, use it here and compare the position errors with the reference model. (5) Turn on the contours and view the result in 3D.</div>
+</div>
+</article>
