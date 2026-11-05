@@ -1,0 +1,37 @@
+<article>
+<p class="eyebrow">Chapter 1 · Concepts</p>
+<h1>How a photograph measures</h1>
+<p class="lede">A camera turns a three-dimensional scene into a flat picture by sending every point through one small opening. If you know where that opening was and how the camera was built, you can run the process backwards.</p>
+
+<div class="prose">
+<h2>The central projection</h2>
+<p>Think of each point on the ground sending a straight ray of light toward the camera. All rays pass through a single point, the <em>projection centre</em> O, which in a real camera lies inside the lens. Behind it, at the distance of the calibrated focal length <i>f</i>, the rays hit the film or sensor and form the image. The point straight below O on the image plane is the <em>principal point</em>.</p>
+<p>Three things are therefore collinear (on one straight line): a ground point, the projection centre, and that point's image. Almost everything in photogrammetry comes from this one fact. If you know the camera's position and pointing, you can predict where a ground point will appear. If you have the same point in two photographs, you can intersect two rays and find its position in space.</p>
+<p>For drawings it is common to show the <em>positive</em> image plane, a mirror copy placed in front of O at the same distance <i>f</i>. The geometry is identical and the picture is the right way round, which is what you see in the demo below.</p>
+</div>
+
+<div class="demo" data-demo="projection3d"></div>
+
+<div class="prose">
+<h2>Image scale</h2>
+<p>For a vertical photograph of flat ground, similar triangles give the scale directly. A distance on the ground and its image are in the same ratio as the flying height above ground <i>H</i> and the focal length <i>f</i>:</p>
+<div class="eq"><math display="block"><mfrac><mn>1</mn><msub><mi>m</mi><mi>b</mi></msub></mfrac><mo>=</mo><mfrac><mi>f</mi><mi>H</mi></mfrac></math></div>
+<p>The number <i>m</i><sub>b</sub> is the image scale number. With <i>f</i> = 153 mm and <i>H</i> = 1530 m, one millimetre in the photo covers ten metres on the ground (1 : 10 000). Real terrain is not flat, so the scale changes from point to point; the value from the formula is an average that is good enough for planning a flight.</p>
+
+<div class="note task"><b>Try it.</b> In the demo, keep the flying height fixed and switch between the four cameras. A shorter focal length covers more ground from the same height, at a smaller scale. Now pick the 305 mm camera and raise the height until the footprint matches what the 153 mm camera covered. What happened to the scale?</div>
+
+<h2>Relief displacement</h2>
+<p>Look at the red mast near the corner of the computed photograph. Its foot and its top are on the same vertical line on the ground, but in the image the top is pushed away from the principal point. Every object that rises above its surroundings leans outward like this, along a line through the principal point. The displacement grows with the object's height <i>h</i> and with the radial distance <i>r</i> of its image from the centre:</p>
+<div class="eq"><math display="block"><mi>d</mi><mo>=</mo><mfrac><mrow><mi>r</mi><mo>·</mo><mi>h</mi></mrow><mi>H</mi></mfrac></math></div>
+<p>This effect is a nuisance when you want a map, because the photo is not an orthogonal projection. It is also the key to measuring heights, which is where stereo photogrammetry begins. The demo prints both the measured lean and the formula's value so you can compare them.</p>
+
+<div class="note task"><b>Try it.</b> Lower the flying height and watch the mast lean further. Then tilt the camera with ω or φ. The formula assumes a vertical photo; how far off is it with a few degrees of tilt?</div>
+
+<h2>What we need to know about a photograph</h2>
+<p>To turn image positions back into rays in space we need two sets of facts.</p>
+<dl class="terms">
+  <dt>Interior orientation</dt><dd>Where the principal point lies in the image, the focal length, and how the image is related to the pixels of the scan. Chapter 2.</dd>
+  <dt>Exterior orientation</dt><dd>Where the projection centre was (X₀, Y₀, Z₀) and how the camera was rotated (ω, φ, κ). Chapter 3 shows the result for the sample pair; later chapters compute it.</dd>
+</dl>
+</div>
+</article>

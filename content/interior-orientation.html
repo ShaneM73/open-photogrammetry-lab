@@ -1,0 +1,44 @@
+<article>
+<p class="eyebrow">Chapter 2 · Concepts and lab</p>
+<h1>Interior orientation</h1>
+<p class="lede">A scanned photograph is a grid of pixels. Before any ray can be traced, every pixel position has to be expressed in the camera's own coordinate system, in millimetres from the principal point.</p>
+
+<div class="prose">
+<h2>Two coordinate systems on one photograph</h2>
+<p>The <em>camera system</em> is defined by the camera itself. Metric survey cameras expose small marks, the <em>fiducials</em>, onto every frame, at the middle of each side or in the corners. Their positions are measured by the manufacturer and listed in the <em>calibration certificate</em>, together with the calibrated focal length. In the sample camera the four side fiducials lie 113 mm from the centre, and the focal length is 152.910 mm.</p>
+<p>The <em>pixel system</em> is defined by the scanner. Here a position is given as a column and a row, counted from the bottom-left corner of the scan. The two systems are never perfectly aligned: the photo lay slightly rotated on the scanner, the scanner's two axes do not have exactly the same resolution, the film may have shrunk unevenly, and the axes of the scanner may not be exactly perpendicular.</p>
+
+<h2>The affine transformation</h2>
+<p>All of these effects together are described well by an affine transformation with six parameters, two shifts and four factors:</p>
+<div class="eq"><math display="block"><mtable columnalign="left"><mtr><mtd><mi>col</mi><mo>=</mo><msub><mi>a</mi><mn>0</mn></msub><mo>+</mo><msub><mi>a</mi><mn>1</mn></msub><mi>x</mi><mo>+</mo><msub><mi>a</mi><mn>2</mn></msub><mi>y</mi></mtd></mtr><mtr><mtd><mi>row</mi><mo>=</mo><msub><mi>b</mi><mn>0</mn></msub><mo>+</mo><msub><mi>b</mi><mn>1</mn></msub><mi>x</mi><mo>+</mo><msub><mi>b</mi><mn>2</mn></msub><mi>y</mi></mtd></mtr></mtable></math></div>
+<p>The shifts <i>a</i><sub>0</sub> and <i>b</i><sub>0</sub> are simply the pixel position of the principal point. The four factors combine a scale for each axis (pixels per millimetre, the inverse of the pixel size), a rotation, and a shear. A <em>similarity</em> transformation is the special case with one common scale and no shear; it has four parameters.</p>
+</div>
+
+<div class="demo" data-demo="affine2d"></div>
+
+<div class="prose">
+<h2>Why measure more fiducials than needed</h2>
+<p>Each measured fiducial gives two equations, one for the column and one for the row. Three fiducials give six equations, exactly enough for six unknowns, so they fit perfectly whether or not you measured them well. A fourth fiducial adds two more equations and two degrees of freedom. Now the transformation cannot fit every point exactly, and the remaining misfits, the <em>residuals</em>, tell you how well you measured.</p>
+<p>The parameters are found by least squares: the solution that makes the sum of the squared residuals as small as possible. The standard deviation of unit weight summarises the result:</p>
+<div class="eq"><math display="block"><msub><mi>σ</mi><mn>0</mn></msub><mo>=</mo><msqrt><mfrac><mrow><msup><mi mathvariant="bold">v</mi><mi>T</mi></msup><mi mathvariant="bold">v</mi></mrow><mrow><mi>n</mi><mo>−</mo><mi>u</mi></mrow></mfrac></msqrt></math></div>
+<p>where <b>v</b> holds the residuals, <i>n</i> is the number of equations and <i>u</i> the number of unknowns. For a careful measurement on a good scan, σ₀ should be well below one pixel.</p>
+
+<h2>Lab: orient photo 157</h2>
+<ol>
+  <li>Click fiducial 1 in the table. The viewer jumps to where it should be.</li>
+  <li>Zoom in until single pixels are visible. Each fiducial is a small bright dot in the tip of a dark V-shaped notch. Click its centre.</li>
+  <li>The viewer moves on to the next fiducial. Measure all four.</li>
+  <li>Read σ₀ and the residuals. A residual much larger than the others usually means a mis-click; select that fiducial and measure it again.</li>
+  <li>Compare your result with the reference. Then switch to the similarity model and see what changes.</li>
+</ol>
+</div>
+
+<div class="demo" data-demo="ioLab"></div>
+
+<div class="prose">
+<div class="note task"><b>Questions.</b> (1) What pixel size does your transformation report, and does it agree with a scan resolution of 300 dpi? (2) With three fiducials σ₀ cannot be computed. Why? (3) Is the difference between the x and y pixel sizes significant, or within measuring precision? (4) Measure photo 158 as well; you will need both for the next chapters.</div>
+
+<h2>Using your own photographs</h2>
+<p>Open a scan (PNG, JPEG, or the course's .IMA format) with <em>Open your own…</em>, and load your camera's calibration with <em>Camera file…</em>. The camera file is plain text: one line per fiducial with its number and its x and y in millimetres, then a line with the calibrated focal length. The result can be copied as an .INN file for the next steps.</p>
+</div>
+</article>

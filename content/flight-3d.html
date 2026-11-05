@@ -1,0 +1,26 @@
+<article>
+<p class="eyebrow">Chapter 3 · Concepts</p>
+<h1>The test flight in 3D</h1>
+<p class="lede">Two photographs of the same ground, taken a few seconds apart from a moving aircraft. Once each camera's position and rotation are known, every point seen in both can be located in space.</p>
+
+<div class="prose">
+<h2>Exterior orientation</h2>
+<p>The exterior orientation of a photograph is six numbers: the ground coordinates of the projection centre (X₀, Y₀, Z₀) and three rotation angles (ω, φ, κ). The angles build a rotation matrix <b>R</b>, which turns a direction measured in the camera into a direction on the ground. With it, the collinearity condition from Chapter 1 becomes a pair of equations:</p>
+<div class="eq"><math display="block"><mtable columnalign="left"><mtr><mtd><mi>x</mi><mo>=</mo><mo>−</mo><mi>f</mi><mfrac><mrow><msub><mi>r</mi><mn>11</mn></msub><mo>(</mo><mi>X</mi><mo>−</mo><msub><mi>X</mi><mn>0</mn></msub><mo>)</mo><mo>+</mo><msub><mi>r</mi><mn>21</mn></msub><mo>(</mo><mi>Y</mi><mo>−</mo><msub><mi>Y</mi><mn>0</mn></msub><mo>)</mo><mo>+</mo><msub><mi>r</mi><mn>31</mn></msub><mo>(</mo><mi>Z</mi><mo>−</mo><msub><mi>Z</mi><mn>0</mn></msub><mo>)</mo></mrow><mrow><msub><mi>r</mi><mn>13</mn></msub><mo>(</mo><mi>X</mi><mo>−</mo><msub><mi>X</mi><mn>0</mn></msub><mo>)</mo><mo>+</mo><msub><mi>r</mi><mn>23</mn></msub><mo>(</mo><mi>Y</mi><mo>−</mo><msub><mi>Y</mi><mn>0</mn></msub><mo>)</mo><mo>+</mo><msub><mi>r</mi><mn>33</mn></msub><mo>(</mo><mi>Z</mi><mo>−</mo><msub><mi>Z</mi><mn>0</mn></msub><mo>)</mo></mrow></mfrac></mtd></mtr><mtr><mtd><mi>y</mi><mo>=</mo><mo>−</mo><mi>f</mi><mfrac><mrow><msub><mi>r</mi><mn>12</mn></msub><mo>(</mo><mi>X</mi><mo>−</mo><msub><mi>X</mi><mn>0</mn></msub><mo>)</mo><mo>+</mo><msub><mi>r</mi><mn>22</mn></msub><mo>(</mo><mi>Y</mi><mo>−</mo><msub><mi>Y</mi><mn>0</mn></msub><mo>)</mo><mo>+</mo><msub><mi>r</mi><mn>32</mn></msub><mo>(</mo><mi>Z</mi><mo>−</mo><msub><mi>Z</mi><mn>0</mn></msub><mo>)</mo></mrow><mrow><msub><mi>r</mi><mn>13</mn></msub><mo>(</mo><mi>X</mi><mo>−</mo><msub><mi>X</mi><mn>0</mn></msub><mo>)</mo><mo>+</mo><msub><mi>r</mi><mn>23</mn></msub><mo>(</mo><mi>Y</mi><mo>−</mo><msub><mi>Y</mi><mn>0</mn></msub><mo>)</mo><mo>+</mo><msub><mi>r</mi><mn>33</mn></msub><mo>(</mo><mi>Z</mi><mo>−</mo><msub><mi>Z</mi><mn>0</mn></msub><mo>)</mo></mrow></mfrac></mtd></mtr></mtable></math></div>
+<p>These are the <em>collinearity equations</em>. Read forward, they predict where a ground point appears in the photo. Read backward, an image point gives a ray, and the ray meets the ground somewhere along its length. With only one photo you need the terrain height to know where; with two photos, the second ray answers that question.</p>
+<p>In the scene below, the exterior orientations of photos 157 and 158 come from the reference results of the sample data. The software placed each camera, drew its photo on the image plane (enlarged), and found each footprint by sending rays through the photo's border and intersecting them with the terrain model.</p>
+</div>
+
+<div class="demo" data-demo="flight3d"></div>
+
+<div class="prose">
+<h2>Overlap and the air base</h2>
+<p>Survey flights are planned so that consecutive photos overlap by about 60 percent along the flight line. Every point in the overlap is seen from two positions, and that is what makes three-dimensional measurement possible. The distance between the two exposure stations is the <em>air base</em> B.</p>
+<p>The ratio of base to flying height, B/H, controls how precisely heights can be measured. A larger base means the two rays meet at a wider angle, so a small error in an image measurement moves the intersection point less. The sample pair has a B/H of about 0.5 and a forward overlap of about 70 percent, both typical for a wide-angle survey camera.</p>
+
+<div class="note task"><b>Explore.</b> (1) Use <em>From above</em> and find the strip where the two footprints overlap. Which control points lie inside it? (2) Click point 15702 and compare its image coordinates in both photos: the difference in x is the <em>parallax</em>, and it depends on the point's height. Find the control point with the largest parallax. Is it the highest or the lowest point? (3) Raise the vertical exaggeration. Why do the footprints stay put on the map while the terrain changes shape?</div>
+
+<h2>Where the course goes next</h2>
+<p>Here the orientations were given. In the next chapters you will compute them yourself: first the relative orientation, which recreates the geometry between the two photos without any ground information, and then the absolute orientation, which places that model onto the ground control points shown here.</p>
+</div>
+</article>
