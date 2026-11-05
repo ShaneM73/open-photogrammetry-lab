@@ -61,12 +61,36 @@ const Ry = p => [[Math.cos(p), 0, Math.sin(p)], [0, 1, 0], [-Math.sin(p), 0, Mat
 const Rz = k => [[Math.cos(k), -Math.sin(k), 0], [Math.sin(k), Math.cos(k), 0], [0, 0, 1]];
 const mul = (A, B) => A.map(r => [0, 1, 2].map(j => r[0] * B[0][j] + r[1] * B[1][j] + r[2] * B[2][j]));
 
-// Rotation matrix from camera to ground axes, in the angle convention of the
-// course data files: R = Rz(kappa) * Rx(omega) * Ry(-phi).
-// (Determined from the .ABS files of the sample data: with this order a
-// resection reproduces their kappa to 0.0001 deg, see tests/.)
+// Rotation matrix from camera to ground axes, standard omega-phi-kappa
+// sequence: R = Rx(omega) * Ry(phi) * Rz(kappa). All angles shown in the
+// course use this convention.
 export function rotationMatrix(omega, phi, kappa) {
-  return mul(mul(Rz(kappa), Rx(omega)), Ry(-phi));
+  return mul(mul(Rx(omega), Ry(phi)), Rz(kappa));
+}
+
+// Inverse of rotationMatrix().
+export function anglesFromMatrix(R) {
+  return {
+    omega: Math.atan2(-R[1][2], R[2][2]),
+    phi: Math.asin(Math.max(-1, Math.min(1, R[0][2]))),
+    kappa: Math.atan2(-R[0][1], R[0][0]),
+  };
+}
+
+// The course data files (.ABS) store three angles (a, b, c) meaning
+// R = Ry(a) * Rx(b) * Rz(c): their first angle turns about the Y axis.
+// Determined from the sample data sets (aerial, digital close-range and
+// oblique): it reproduces the rotation matrices found by resection from
+// each file's own points to about 4e-5. See tests/conventions.test.mjs.
+export function matrixFromFileAngles(a, b, c) {
+  return mul(mul(Ry(a), Rx(b)), Rz(c));
+}
+export function fileAnglesFromMatrix(R) {
+  return {
+    a: Math.atan2(R[0][2], R[2][2]),
+    b: Math.asin(Math.max(-1, Math.min(1, -R[1][2]))),
+    c: Math.atan2(R[1][0], R[1][1]),
+  };
 }
 
 // Collinearity: ground point -> image coordinates in mm.

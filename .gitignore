@@ -1,3 +1,6 @@
 data/sample/
+data/block/
+data/erosion/
+data/waves/
 .DS_Store
 node_modules/

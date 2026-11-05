@@ -38,11 +38,8 @@ export function gaussNewton(residuals, p0, h, { maxIter = 30, tol = 1e-10 } = {}
 
 /* ---------- rotation matrix <-> angles ---------- */
 
-// Inverse of rotationMatrix(): R = Rz(kappa) Rx(omega) Ry(-phi).
-// Its third row is (-cos(omega) sin(-phi), sin(omega), cos(omega) cos(-phi)).
-export function anglesFromMatrix(R) {
-  return { omega: Math.asin(Math.max(-1, Math.min(1, R[2][1]))), phi: Math.atan2(R[2][0], R[2][2]), kappa: Math.atan2(-R[0][1], R[1][1]) };
-}
+export { anglesFromMatrix } from './orientation.js';
+import { anglesFromMatrix } from './orientation.js';
 
 /* ---------- space resection ---------- */
 

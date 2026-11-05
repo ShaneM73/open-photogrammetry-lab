@@ -2,6 +2,8 @@
 // The text formats follow the files distributed with the original course data,
 // so the same code reads both that data set and new data prepared the same way.
 
+import { matrixFromFileAngles, fileAnglesFromMatrix, anglesFromMatrix } from './orientation.js';
+
 const nums = line => line.trim().split(/\s+/).filter(Boolean).map(Number);
 const lines = text => text.split(/\r?\n/).filter(l => l.trim() !== '');
 
@@ -43,15 +45,26 @@ export function parseINN(text) {
   };
 }
 
-// Exterior orientation (.ABS): focal length; omega phi kappa (radians);
-// X0 Y0 Z0; then "id x y X Y Z" for each point used.
+// Exterior orientation (.ABS): focal length; three rotation angles (radians,
+// in the file convention R = Ry(a) Rx(b) Rz(c)); X0 Y0 Z0; then
+// "id x y X Y Z" for each point used. The result carries the rotation matrix
+// R and the angles converted to the course's standard omega-phi-kappa.
 export function parseABS(text) {
   const L = lines(text);
-  const [omega, phi, kappa] = nums(L[1]);
+  const fileAngles = nums(L[1]);
   const [X0, Y0, Z0] = nums(L[2]);
   const points = L.slice(3).map(nums).filter(v => v.length >= 6)
     .map(v => ({ id: v[0], x: v[1], y: v[2], X: v[3], Y: v[4], Z: v[5] }));
-  return { focal: Number(L[0]), omega, phi, kappa, X0, Y0, Z0, points };
+  const R = matrixFromFileAngles(...fileAngles);
+  return { focal: Number(L[0]), ...anglesFromMatrix(R), R, fileAngles, X0, Y0, Z0, points };
+}
+
+// Write an exterior orientation in the .ABS layout.
+export function formatABS(eo, points = []) {
+  const { a, b, c } = fileAnglesFromMatrix(eo.R);
+  const f = (v, w, d) => v.toFixed(d).padStart(w);
+  return [f(eo.focal, 12, 3), f(a, 12, 6) + f(b, 12, 6) + f(c, 12, 6), f(eo.X0, 12, 3) + f(eo.Y0, 12, 3) + f(eo.Z0, 12, 3),
+    ...points.map(p => String(p.id).padStart(10) + f(p.x, 12, 3) + f(p.y, 12, 3) + f(p.X, 13, 3) + f(p.Y, 13, 3) + f(p.Z, 13, 3))].join('\n') + '\n';
 }
 
 // Ground control (.DAT): "id X Y Z" per line.
