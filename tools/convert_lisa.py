@@ -44,8 +44,9 @@ def main(src, out):
     step = 4  # 20 m grid for the 3D scene
     zs = z[::step, ::step]
     meta_d = dict(meta, rows=zs.shape[0], cols=zs.shape[1], pixel=meta['pixel'] * step)
-    np.round(zs, 1).astype('<f4').tofile(os.path.join(out, 'dem20.f32'))
-    json.dump(meta_d, open(os.path.join(out, 'dem20.json'), 'w'))
+    # heights in decimetres as integers keep the JSON compact
+    meta_d['heights_dm'] = np.round(zs * 10).astype(int).ravel().tolist()
+    json.dump(meta_d, open(os.path.join(out, 'dem20.json'), 'w'), separators=(',', ':'))
     meta, ortho = read_ima(os.path.join(t2, 'ortho.ima'))
     Image.fromarray(ortho).save(os.path.join(out, 'ortho.jpg'), quality=85)
     json.dump(meta, open(os.path.join(out, 'ortho.json'), 'w'))

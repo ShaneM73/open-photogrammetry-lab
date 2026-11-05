@@ -32,11 +32,11 @@ export async function mount(root) {
   const colLeft = cssVar('--left'), colRight = cssVar('--right');
 
   const get = (f, type = 'text') => fetch(DATA + f).then(r => { if (!r.ok) throw new Error(`${f} is missing`); return r[type](); });
-  const [demMeta, demBuf, orthoMeta, control, ...rest] = await Promise.all([
-    get('dem20.json', 'json'), get('dem20.f32', 'arrayBuffer'), get('ortho.json', 'json'), get('CONTROL.DAT'),
+  const [demMeta, orthoMeta, control, ...rest] = await Promise.all([
+    get('dem20.json', 'json'), get('ortho.json', 'json'), get('CONTROL.DAT'),
     ...IMAGES.flatMap(id => [get(id + '.ABS'), get(id + '.INN')]),
   ]);
-  const dem = new Float32Array(demBuf);
+  const dem = Float32Array.from(demMeta.heights_dm, h => h / 10);
   const ctrl = parseControl(control);
   const cams = IMAGES.map((id, i) => {
     const eo = parseABS(rest[2 * i]);

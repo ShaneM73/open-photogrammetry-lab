@@ -15,7 +15,7 @@ not redistributed here. A replacement data set for the open course is planned.
 | `157.ABS`, `158.ABS` | Exterior orientations: focal length; ω φ κ (rad); X₀ Y₀ Z₀; then `id x y X Y Z` |
 | `CONTROL.DAT` | Ground control points: `id X Y Z` |
 | `chip_<id>.png` | 121 × 121 image chips around each control point |
-| `dem20.f32` + `dem20.json` | Terrain heights, float32, row 0 = north edge, with the grid's extent |
+| `dem20.json` | Terrain grid: extent, cell size, and `heights_dm` (heights in decimetres, row by row from the north edge) |
 | `ortho.jpg` + `ortho.json` | Orthophoto covering the same extent as the terrain model |
 
 Pixel coordinates in the `.INN` files use the bottom-left corner of the scan
