@@ -58,12 +58,13 @@ export function fillGaps(g, mask = null, maxPasses = 200) {
   return g;
 }
 
-// 3 x 3 median filter: removes isolated spikes and pits left by mismatches.
-export function medianFilter(g) {
+// Median filter over a (2 radius + 1)^2 window: removes isolated spikes and
+// pits left by mismatches (radius 1 = 3 x 3, radius 2 = 5 x 5).
+export function medianFilter(g, radius = 1) {
   const z = g.z, R = g.rows, C = g.cols, out = new Float32Array(z.length), win = [];
   for (let r = 0; r < R; r++) for (let c = 0; c < C; c++) {
     win.length = 0;
-    for (let dr = -1; dr <= 1; dr++) for (let dc = -1; dc <= 1; dc++) {
+    for (let dr = -radius; dr <= radius; dr++) for (let dc = -radius; dc <= radius; dc++) {
       const rr = r + dr, cc = c + dc;
       if (rr >= 0 && cc >= 0 && rr < R && cc < C && !Number.isNaN(z[rr * C + cc])) win.push(z[rr * C + cc]);
     }

@@ -15,14 +15,17 @@
   <li class="live"><a href="#space-resection"><span class="part">Concepts · 4</span><b>Space resection</b><span>Find where the camera was from control points, one Gauss-Newton iteration at a time.</span></a></li>
   <li class="live"><a href="#stereo-model"><span class="part">Concepts · 5</span><b>The stereo model</b><span>Intersection, relative and absolute orientation. Make the rays meet, then fit the model to the ground.</span></a></li>
   <li class="live"><a href="#lab-single-model"><span class="part">Lab · L1</span><b>A single stereo model</b><span>Measure control in two photos, resect both, then measure heights in stereo with a floating mark.</span></a></li>
-  <li><span class="part">Labs · L2–L3</span><b>Aerial triangulation and special cases</b><span>A block of 23 photos with bundle adjustment, and unusual geometries.</span></li>
-  <li><span class="part">Products · 6–7</span><b>Terrain models and orthophotos</b><span>Image matching, DEM editing and rectification.</span></li>
+  <li class="live"><a href="#lab-triangulation"><span class="part">Lab · L2</span><b>Aerial triangulation</b><span>21 photos, 11 control points: automatic tie points and a bundle block adjustment with blunder detection.</span></a></li>
+  <li class="live"><a href="#lab-special"><span class="part">Lab · L3</span><b>Special cases: soil erosion</b><span>No calibration certificate, a digital camera, y-parallax correction, and the volume of soil washed away.</span></a></li>
+  <li class="live"><a href="#lab-waves"><span class="part">Lab · L4</span><b>Close range: sea waves</b><span>Oblique, convergent cameras measure a moving water surface at two moments.</span></a></li>
+  <li class="live"><a href="#dem"><span class="part">Products · 6</span><b>Terrain models by image matching</b><span>Correlation along the vertical, coarse-to-fine matching and quality control.</span></a></li>
+  <li class="live"><a href="#orthophoto"><span class="part">Products · 7</span><b>Orthophotos</b><span>Indirect rectification, resampling, mosaics and the accuracy an orthophoto inherits from its terrain model.</span></a></li>
 </ul>
 
 <div class="prose">
 <h2>What you need</h2>
 <p>A current browser on a laptop or desktop. A mouse makes measuring easier, though a trackpad works. Nothing is installed and nothing is uploaded: the software runs on your computer, inside the page.</p>
-<p>The labs start with a sample data set, a pair of black-and-white aerial photographs (numbers 157 and 158) taken with a 153 mm survey camera and scanned at about 85 µm. The set includes ground control points, a terrain model and reference results, so you can check every step against a known answer. Once you are comfortable, the same tools accept your own scans and camera files.</p>
+<p>The labs use four data sets: a pair of black-and-white aerial photographs (numbers 157 and 158) taken with a 153 mm survey camera and scanned at about 85 µm; a block of 21 such photos; two stereo pairs of a soil-erosion test plot taken with a digital camera; and two pairs of oblique photos of sea waves. Each comes with control points and reference results, so you can check every step against a known answer. The same tools accept your own scans and camera files.</p>
 
 <h2>Conventions used throughout</h2>
 <dl class="terms">

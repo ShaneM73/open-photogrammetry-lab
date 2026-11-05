@@ -9,10 +9,10 @@ import { cameraToPixel, pixelToCamera, rotationMatrix } from './orientation.js';
 // bottom-left pixel convention); scale: original pixels per loaded pixel;
 // format: { hx, hy } half-size in mm of the usable image area (inside the
 // film frame and fiducial marks); points outside it count as not seen.
-export function makePhoto({ id, inn, eo = null, fullRows, scale = 1, grey = null, format = null }) {
+export function makePhoto({ id, inn, eo = null, fullRows, scale = 1, grey = null, format = null, correction = null }) {
   const c = inn.coef;
   const photo = {
-    id, inn, eo, scale, grey, fullRows, format,
+    id, inn, eo, scale, grey, fullRows, format, correction,
     focal: inn.focal || eo?.focal,
     // camera mm -> raster position in the loaded image (origin top-left, pixel i covers i..i+1)
     toRaster(x, y) {
@@ -37,10 +37,15 @@ export function makePhoto({ id, inn, eo = null, fullRows, scale = 1, grey = null
       if (photo.format && (Math.abs(x) > photo.format.hx || Math.abs(y) > photo.format.hy)) return null;
       return [x, y];
     },
-    // ground -> raster position in the loaded image
+    // ground -> raster position in the loaded image; an optional correction
+    // (u, v) -> [du, dv] models what the camera geometry leaves out
+    // (lens distortion, sensor movement), see matching.js fitParallaxCorrection.
     project(X, Y, Z) {
       const m = photo.projectMM(X, Y, Z);
-      return m ? photo.toRaster(m[0], m[1]) : null;
+      if (!m) return null;
+      const r = photo.toRaster(m[0], m[1]);
+      if (photo.correction) { const c = photo.correction(r[0], r[1]); r[0] += c[0]; r[1] += c[1]; }
+      return r;
     },
     // grey value at a ground point (bilinear), or -1 outside the photo
     sampleGround(X, Y, Z) {

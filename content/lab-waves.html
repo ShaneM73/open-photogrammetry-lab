@@ -1,0 +1,35 @@
+<article>
+<p class="eyebrow">Lab L4 · Close range</p>
+<h1>Close range: sea waves</h1>
+<p class="lede">Two video cameras on the roof of a building look out over a beach, taking pictures at the same instant every eighth of a second. From each pair of photos, the water surface can be measured in three dimensions, and from a sequence, how the waves move.</p>
+
+<div class="prose">
+<h2>An oblique, convergent set-up</h2>
+<p>Everything so far has been close to the vertical aerial case: cameras looking straight down, nearly parallel rays, a scale that changes only with the terrain. This lab breaks all three assumptions.</p>
+<dl class="terms">
+  <dt>Oblique views</dt><dd>The cameras look out to sea at a shallow angle. The rotations ω and φ are large, and the scale changes strongly from the foreground to the horizon.</dd>
+  <dt>Convergent rays</dt><dd>The two cameras, about 15 m apart on the roof, point towards each other's field of view instead of in parallel.</dd>
+  <dt>Low height</dt><dd>The cameras are about 34 m above the water and look at an area 100 to 250 m away. Wave crests hide the water behind them.</dd>
+  <dt>Moving object</dt><dd>The water never stands still, so both photos of a pair must be taken at exactly the same moment.</dd>
+</dl>
+<p>The photos are small (1296 × 1031 pixels), the weather was misty, and waves form long, repetitive patterns. All of that makes image matching hard. The data come from the WaveScan project of the University of Hannover on the island of Norderney, Germany. Coordinates are Gauss-Krüger metres; heights are relative to the local vertical datum.</p>
+
+<h2>What changes in the workflow</h2>
+<p><b>Approximate values.</b> The space resection needs starting values close to the truth; with oblique photos, the vertical-photo assumption of Chapter 4 fails. Here the stored orientations serve as the start, in practice the camera positions would be measured on the roof.</p>
+<p><b>Matching.</b> The vertical line locus still works, because it searches along the vertical in object space whatever the camera's direction. But a full search finds false peaks between neighbouring wave crests. The lab therefore interpolates a first surface from about a hundred start points measured by hand, and searches only a narrow band of ±0.3 m around it.</p>
+<p><b>Two epochs.</b> The camera positions do not change during the sequence, so the orientations of the first pair apply to all later pairs. Here you will check this by orienting both pairs separately.</p>
+</div>
+
+<div class="demo" data-demo="closerangeLab" data-set="waves"></div>
+
+<div class="prose">
+<div class="note task"><b>Tasks.</b>
+<ol>
+  <li>In the 3D view of step 1, find the two cameras, the control points on the shore and the groyne, and the evaluation area on the water. Estimate the angle between each camera's axis and the water surface.</li>
+  <li>Compare the orientations of photos 191201 and 191401, taken by the same camera a quarter of a second apart. How well do they agree?</li>
+  <li>Why is a linear (affine) y-parallax correction enough here, while the soil erosion lab needed a second-order one?</li>
+  <li>Match both epochs with 0.5 m and with 0.25 m grid spacing. Look at the surfaces in 3D. Can you identify individual wave crests and see where they move between the two epochs?</li>
+  <li>Compare your surfaces with the reference surfaces delivered with the data. Which looks more realistic, and what does each method do in areas without good texture?</li>
+</ol></div>
+</div>
+</article>

@@ -15,7 +15,8 @@ export const CHAPTERS = [
   { part: 'II · Labs', items: [
     { id: 'lab-single-model', n: 'L1', title: 'A single stereo model' },
     { id: 'lab-triangulation', n: 'L2', title: 'Aerial triangulation' },
-    { id: 'lab-special', n: 'L3', title: 'Special cases', soon: true },
+    { id: 'lab-special', n: 'L3', title: 'Special cases: soil erosion' },
+    { id: 'lab-waves', n: 'L4', title: 'Close range: sea waves' },
   ] },
   { part: 'III · Products', items: [
     { id: 'dem', n: '6', title: 'Terrain models by image matching' },
@@ -36,6 +37,9 @@ const MODULES = {
   resampling: () => import('./demos/resampling.js'),
   orthoLab: () => import('./lab/ortho-lab.js'),
   blockLab: () => import('./lab/block-lab.js'),
+  closerangeLab: () => import('./lab/closerange-lab.js'),
+  pseudocam: () => import('./demos/pseudocam.js'),
+  distortion: () => import('./demos/distortion.js'),
 };
 
 const toc = document.getElementById('toc');

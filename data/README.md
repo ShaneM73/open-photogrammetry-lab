@@ -1,6 +1,6 @@
 # Course data
 
-The site reads everything from `data/sample/`. That folder is ignored by git:
+The site reads its data from `data/sample/`, `data/block/`, `data/erosion/` and `data/waves/`. These folders are ignored by git:
 the data set used during development comes from a published textbook and is
 not redistributed here. A replacement data set for the open course is planned.
 
@@ -20,6 +20,15 @@ not redistributed here. A replacement data set for the open course is planned.
 
 Pixel coordinates in the `.INN` files use the bottom-left corner of the scan
 as origin, with rows counted upward.
+
+## Other data sets
+
+`tools/convert_lisa.py` also writes:
+
+- `data/block/`: 21 photos of a block (half resolution JPEG), their `.INN` files, `CONTROL.DAT`, control point chips, `TIEPOINT.DAT` (rough strip-connection positions in a ~300 px overview, rows from the top) and `CP_ICOOR.DAT` (approximate control positions).
+- `data/erosion/`, `data/waves/`: digital-camera photos (PNG), `CAMERA.INN` (interior orientation of the sensor), `CAMERA.CMR`, `.ABS` per photo, `CONTROL.DAT`, start points, reference surfaces as JSON grids (`divisor`, `values`, null = no data), and for the waves the evaluation polygon `BORDER.DAT`.
+
+Rotation angles in `.ABS` files mean R = Ry(a) · Rx(b) · Rz(c) for the three stored angles; the software converts them to the standard ω-φ-κ convention on reading.
 
 ## From the original course data
 

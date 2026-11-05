@@ -1,0 +1,42 @@
+<article>
+<p class="eyebrow">Lab L3 · Special cases</p>
+<h1>Special cases: soil erosion</h1>
+<p class="lede">Photogrammetry does not need a metric aerial camera. This lab works without a calibration certificate, then measures soil washed away by artificial rain, using a digital camera mounted about 1.5 m above a test plot.</p>
+
+<div class="prose">
+<h2>Interior orientation without a calibration certificate</h2>
+<p>Old aerial photos often turn up without their camera's calibration certificate. The focal length is usually printed in the photo's data strip, or one can assume a standard value: 153 mm for wide-angle cameras, 305 mm for normal-angle ones. The fiducial coordinates can be estimated from the photo itself. If the fiducials sit in the middle of each side, the lines through opposite pairs cross at right angles near the principal point, and the scan resolution turns pixel distances into millimetres.</p>
+<p>Such a <em>pseudo camera definition</em> is good enough for many purposes, but its scale is only as good as the scanner's stated resolution. Real calibration values should be used whenever they exist.</p>
+</div>
+
+<div class="demo" data-demo="pseudocam"></div>
+
+<div class="prose">
+<div class="note task"><b>Try it.</b> At 300 dpi, how far from the calibrated values do the pseudo fiducials lie? Move the resolution to 299 dpi. How large is the scale error now, and what would it do to measured heights?</div>
+
+<h2>Digital cameras</h2>
+<p>A digital camera has no fiducials: every pixel sits in the same place on the sensor in every image, so the interior orientation follows from the sensor's pixel size, its number of rows and columns, the principal point and the focal length. For the camera in this lab these are 9 µm pixels, 2036 × 3060 pixels and a focal length of 18.85 mm.</p>
+<p>What a simple digital camera lacks is geometric stability. Its lens distorts the image more than a metric lens does, and the sensor may sit loosely in its mount. Without a calibration, these effects remain in the measurements.</p>
+</div>
+
+<div class="demo" data-demo="distortion"></div>
+
+<div class="prose">
+<h2>The soil erosion experiment</h2>
+<p>A test field of bare soil, about 0.7 × 1.6 m, was photographed from two positions before and after several artificial rainfall events. Control targets are fixed along both long edges. Coordinates are in millimetres in a local system. The data come from a joint study by the Institute of Photogrammetry and GeoInformation, University of Hannover, and the USDA National Soil Erosion Research Laboratory.</p>
+<p>The steps are the same as for an aerial model, with one addition. Because the camera is not calibrated, corresponding points do not fall exactly on the same epipolar line: a y-parallax of several pixels remains, which would spoil the matching. Step 2 measures it at the start points delivered with the data and corrects it with a polynomial.</p>
+</div>
+
+<div class="demo" data-demo="closerangeLab" data-set="erosion"></div>
+
+<div class="prose">
+<div class="note task"><b>Tasks.</b>
+<ol>
+  <li>After the orientation, compare the two camera positions of the left camera before and after the rain. Was the camera moved?</li>
+  <li>In step 2, how large is the y-parallax before and after the correction? Look at the arrows: is the pattern random or systematic, and what does that suggest about its cause?</li>
+  <li>Match both epochs once with and once without the correction (step 2 has a switch). Compare the share of matched cells and the agreement with the reference surfaces.</li>
+  <li>In the results, look at the change map and the correlation map of the surface after rain. Where does matching fail, and why? The book that this data comes from mentions gullies with steep walls and dark, low-contrast bottoms.</li>
+  <li>Report the eroded volume from all cells and from the cells matched in both epochs. The reference surfaces give about 17 dm³; the original study reports 22 dm³. Which of your numbers do you trust more, and what would you do to improve it?</li>
+</ol></div>
+</div>
+</article>
